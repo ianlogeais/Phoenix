@@ -8,7 +8,7 @@ rhel_release=$(cat /etc/redhat-release)
 ubuntu_release=$(cat /etc/os-release)
 
 
-if [ ! -e /bin/vim ], then 
+if [ ! -e /bin/vim ]; then 
     yum install vim -y 
 fi
 
@@ -30,4 +30,7 @@ fi
 echo $USER >> /etc/incron.allow
 
 # definitive version echo /home/$USER/* IN_DELETE /home/ian/wphoenix.sh >> /etc/incron.d/incron
-echo /home/ian/* IN_DELETE /home/ian/wphoenix.sh >> /etc/incron.d/incron
+
+echo '/home/ian/Phoenix IN_DELETE /home/ian/Phoenix/wphoenix.sh' > /home/ian/incron/incron.txt
+
+incrontab -u root /home/ian/incron/incron.txt
