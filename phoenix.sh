@@ -1,36 +1,29 @@
 #!/bin/bash 
 
-# incron IN_DELETE
-
 # Declaration of variables
-
-rhel_release=$(cat /etc/redhat-release)
-ubuntu_release=$(cat /etc/os-release)
-
-
-if [ ! -e /bin/vim ]; then 
-    yum install vim -y 
-fi
-
-# Check the os to know what packet manager we'll use to downolad incron
-
-if [ ! -e /etc/incron.d ]; then
-    yum install epel-release -y
-    yum install incron -y
-fi    
 
 # We create the log file if it does not exist 
 
 if [ ! -e /var/log/phoenix.log ]; then
     touch /var/log/phoenix.log
+    chmod 777 /var/log/phoenix.log
 fi
 
-# We configure the incron to execute another script when the files are deleted
 
-echo $USER >> /etc/incron.allow
+echo -e "\nalias rm='mkdir -p $HOME/.trash && mv -b -t $HOME/.trash'" >> $HOME/.bashrc
 
-# definitive version echo /home/$USER/* IN_DELETE /home/ian/wphoenix.sh >> /etc/incron.d/incron
 
-echo '/home/ian/Phoenix IN_DELETE /home/ian/Phoenix/wphoenix.sh' > /home/ian/incron/incron.txt
 
-incrontab -u root /home/ian/incron/incron.txt
+source $HOME/.bashrc
+
+if [[ -n "$1" && "$2" ]]; then
+    mv $HOME/.trash/$1 $2
+fi
+
+history=$(history |  grep -v "history" | grep rm)
+
+echo $history
+
+echo $history >> /var/log/phoenix.log
+
+history |  grep -v "history" | grep rm >> /var/log/phoenix.log
