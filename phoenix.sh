@@ -11,14 +11,15 @@ fi
 
 # Modification of the .bashrc file
 
-echo -e "\nalias rm='mkdir -p $HOME/.trash && mv -b -t $HOME/.trash'" >> $HOME/.bashrc
+case $1 in 
+-i | --install)
+    echo -e "\nalias rm='mkdir -p $HOME/.trash && mv -b -t $HOME/.trash'" >> $HOME/.bashrc
+    source $HOME/.bashrc
+    echo "Phoenix correctly configured"
+    ;;
+esac
 
 
-
-source $HOME/.bashrc
-
-
-# Arguments use case
 
 # Command phoenix to bring back files
 
@@ -29,7 +30,8 @@ fi
 
 # help args
 
-if [[ -n "h" || "-help" ]]; then 
+case $1 in
+-h | --help)
     echo "To bring back a file use the command : phoenix arg1=the_name_of_the_file arg2=where_you_want_it_to_come_back"
-fi
-
+    ;;
+esac
